@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package com.example.grpc.product;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc.product";
+option java_outer_classname = "ProductProto";
+
+// ─── Service Definition ────────────────────────────────────────────────────────
+
+service ProductService {
+  // Get a single product by ID
+  rpc GetProduct (GetProductRequest) returns (ProductResponse);
+
+  // List all products (server streaming)
+  rpc ListProducts (ListProductsRequest) returns (stream ProductResponse);
+
+  // Create a product
+  rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+}
+
+// ─── Request Messages ──────────────────────────────────────────────────────────
+
+message GetProductRequest {
+  string product_id = 1;
+}
+
+message ListProductsRequest {
+  int32 page      = 1;
+  int32 page_size = 2;
+}
+
+message CreateProductRequest {
+  string name        = 1;
+  string description = 2;
+  double price       = 3;
+  string owner_id    = 4;   // Links to a User (fetched via gRPC from user-service)
+}
+
+// ─── Response Messages ─────────────────────────────────────────────────────────
+
+message ProductResponse {
+  string product_id   = 1;
+  string name         = 2;
+  string description  = 3;
+  double price        = 4;
+  string owner_id     = 5;
+  string owner_name   = 6;   // Enriched from user-service via gRPC
+  string owner_email  = 7;   // Enriched from user-service via gRPC
+}

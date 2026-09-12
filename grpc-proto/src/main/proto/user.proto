@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package com.example.grpc.user;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc.user";
+option java_outer_classname = "UserProto";
+
+// ─── Service Definition ────────────────────────────────────────────────────────
+
+service UserService {
+  // Get a single user by ID
+  rpc GetUser (GetUserRequest) returns (UserResponse);
+
+  // Get all users (server streaming)
+  rpc ListUsers (ListUsersRequest) returns (stream UserResponse);
+
+  // Create a new user
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+}
+
+// ─── Request Messages ──────────────────────────────────────────────────────────
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message ListUsersRequest {
+  int32 page      = 1;
+  int32 page_size = 2;
+}
+
+message CreateUserRequest {
+  string name  = 1;
+  string email = 2;
+  int32  age   = 3;
+}
+
+// ─── Response Messages ─────────────────────────────────────────────────────────
+
+message UserResponse {
+  string user_id   = 1;
+  string name      = 2;
+  string email     = 3;
+  int32  age       = 4;
+  string status    = 5;
+}

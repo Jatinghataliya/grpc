@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:h2:mem:productdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Spring Boot HTTP / REST API on port 8081
+server:
+  port: 8081
+
+# gRPC Client — points to user-service gRPC server
+grpc:
+  client:
+    user-service:
+      address: static://localhost:9090
+      negotiation-type: plaintext
+
+logging:
+  level:
+    com.example.grpc: DEBUG
+    io.grpc: INFO
